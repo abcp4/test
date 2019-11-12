@@ -446,7 +446,7 @@ class CrossValidation( Session ) :
 		for iteration in trainAccBar :
 			trainAccBar.set_description( "\r- Train Acc" )
 
-			x_batch, y_batch = self.sess.run( next_train )
+			x_batch, y_batch,z_batch = self.sess.run( next_train )
 
 			feed_dict_batch = { self.x : x_batch, self.y : y_batch }
 			loss_train, acc_train = self.sess.run( [self.loss, self.accuracy], feed_dict = feed_dict_batch )
