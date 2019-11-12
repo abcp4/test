@@ -249,7 +249,7 @@ class CrossValidation( Session ) :
 
 	def create_folds_2(self, n_folds, X, Y) :
 		split = []
-		path_to_folds = 'dataset/train_test'
+		path_to_folds = '/content/dataset/train_test'
 		import os
 		
 		folds = os.listdir(path_to_folds)
