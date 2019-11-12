@@ -432,7 +432,7 @@ class CrossValidation( Session ) :
 
 				if death_counter >= early_stop_epochs :
 					break
-			        a=2/0
+				a=2/0
 			
 
 			elif epoch == max_epochs :
