@@ -385,11 +385,13 @@ class CrossValidation( Session ) :
 				trainbar.set_description( "\r- Train Batch" )
 
 				x_batch, y_batch,z_batch = self.sess.run( next_train )
-				print('z batch:',z_batch)
-				a=2/0
+				#print('z batch:',z_batch)
+				#
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
-				self.sess.run( self.optimizer, feed_dict = feed_dict_batch )
+				logits = self.sess.run( [self.optimizer,self.output_logits], feed_dict = feed_dict_batch )
+				print('logits:',logits)
+				a=2/0
 
 			trainbar.close( )
 
@@ -403,7 +405,7 @@ class CrossValidation( Session ) :
 				for iteration in validationbar :
 					validationbar.set_description( "\r- Validation Batch" )
 
-					x_batch, y_batch = self.sess.run( next_val )
+					x_batch, y_batch,z_batch = self.sess.run( next_val )
 
 					feed_dict_batch = { self.x : x_batch, self.y : y_batch }
 					loss_valid, acc_valid = self.sess.run( [self.loss, self.accuracy], feed_dict = feed_dict_batch )
