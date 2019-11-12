@@ -286,8 +286,8 @@ class CrossValidation( Session ) :
 			baseline=False, dev_pred=None) :
 		assert n_folds > 1, 'Tamanho de folds deve ser maior que 1'
 		print("X:")
-		print(X)
-		a=2/0
+		Z = [file.split('/')[-1] for file in X]
+		print(Z)
 
 		folds, X, Y = self.create_folds_2( n_folds, X, Y )
 		td_results = []
@@ -302,7 +302,7 @@ class CrossValidation( Session ) :
 															   stratify = Y[train_folds] )
 				else :
 					dev_folds = []
-				result = self.train_schedule( X, Y,
+				result = self.train_schedule( X, Y,Z,
 											  train_folds, dev_folds, test_folds, max_epochs = epochs,
 											  early_stop_epochs = early_stop_epochs,
 											  batch_size = batch_size, lr = learning_rate )
@@ -339,7 +339,7 @@ class CrossValidation( Session ) :
 		return dataset_iterator, next_element
 
 
-	def train_schedule(self, X, Y, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
+	def train_schedule(self, X, Y,Z, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
 					    checkpoint=None, optimizer=None) :
 		fold_start = time.time( )
 		checkpoint_file = self.checkpoint_path + self.model_name + '/model'
@@ -388,6 +388,8 @@ class CrossValidation( Session ) :
 				trainbar.set_description( "\r- Train Batch" )
 
 				x_batch, y_batch = self.sess.run( next_train )
+				print('x batch:',x_batch)
+				a=2/0
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
 				self.sess.run( self.optimizer, feed_dict = feed_dict_batch )
