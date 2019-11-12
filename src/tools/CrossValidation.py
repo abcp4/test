@@ -251,6 +251,7 @@ class CrossValidation( Session ) :
 		split = []
 		path_to_folds = 'dataset/train_test'
 		import os
+		
 		folds = os.listdir(path_to_folds)
 		for fold_index in folds:
 			import pandas as pd
@@ -260,6 +261,7 @@ class CrossValidation( Session ) :
 
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
+			
 			index_train, index_test = np.where(cond_train == True)[0], np.where(cond_test == True)[0]
 			print('>>>>>>>>', index_train.shape, index_test.shape, self.params.augmented)
 			if self.params.aug_images:
@@ -283,6 +285,9 @@ class CrossValidation( Session ) :
 	def run(self, X, Y, n_folds, epochs=40, batch_size=64, learning_rate=0.0001, early_stop_epochs=0, early_stop=False,
 			baseline=False, dev_pred=None) :
 		assert n_folds > 1, 'Tamanho de folds deve ser maior que 1'
+		print("X:")
+		print(X)
+		a=2/0
 
 		folds, X, Y = self.create_folds_2( n_folds, X, Y )
 		td_results = []
