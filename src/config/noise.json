@@ -1,0 +1,39 @@
+{
+  "label_filename": "train_png.txt",
+  "data_folder": "FIGURAS_ML_PUC_2019_Co",
+
+  "label_test_filename": "train.txt",
+  "data_test_folder": "train",
+
+  "checkpoint": "miniception_D_1571285719.1279602",
+
+  "model": "D",
+  "num_epochs": 100,
+  "batch": 1,
+  "learning_rate": 5e-5,
+  "n_folds": 10,
+  "alpha": 1,
+  "beta": 1,
+  "width": null,
+  "height": null,
+  "n_classes": 3,
+  "n_blocks": 4,
+  "slice": 1.0,
+  "n_channels": 1,
+
+  "augmented": false,
+  "list_augment": ["augV",
+    "cmp_0.95_100","cmp_0.95_200","cmp_0.95_300","cmp_0.95_400",
+    "cmp_1_100","cmp_1_200","cmp_1_300","cmp_1_400",
+    "vcmp_0.95_100","vcmp_0.95_200","vcmp_0.95_300","vcmp_0.95_400",
+    "vcmp_1_100","vcmp_1_200","vcmp_1_300","vcmp_1_400"
+  ],
+  "aug_images": 200,
+  "build_aug": false,
+
+  "rgb" : false,
+  "normalize": true,
+
+  "early_stop": true,
+  "early_stop_epochs": 10
+}

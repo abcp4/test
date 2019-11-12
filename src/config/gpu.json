@@ -1,0 +1,6 @@
+{
+  "gpu": "0",
+  "allow_growth": true,
+  "gpu_memory": 1,
+  "log_device_placement": false
+}

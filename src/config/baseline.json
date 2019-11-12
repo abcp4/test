@@ -1,0 +1,22 @@
+{
+  "label_filename": "train_png.txt",
+  "data_folder": "FIGURAS_ML_PUC_2019_Co",
+
+  "label_test_filename": "test_png.txt",
+  "data_test_folder": "FIGURAS_ML_PUC_2019_Ia",
+
+  "model": "vgg16",
+  "batch": 64,
+  "augmented": false,
+  "n_folds": 10,
+  "alpha": 1,
+  "beta": 6,
+  "width": null,
+  "height": null,
+  "n_classes": 3,
+  "n_blocks": 4,
+  "slice": 1.0,
+
+  "rgb" : true,
+  "normalize": true
+}

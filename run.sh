@@ -1,0 +1,1 @@
+docker run -v ${PWD}:/workspace --rm --runtime=nvidia -p 8080:8080 -it --entrypoint=/bin/bash learngeo_tf

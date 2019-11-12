@@ -1,0 +1,30 @@
+{
+  "label_filename": "major_3.txt",
+  "data_folder": "train",
+
+  "label_test_filename": "test.txt",
+  "data_test_folder": "test",
+
+  "checkpoint": "miniception_D_1571285719.1279602",
+
+  "model": "D",
+  "num_epochs": 40,
+  "batch": 64,
+  "learning_rate": 1e-4,
+  "augmented": false,
+  "n_folds": 10,
+  "alpha": 1,
+  "beta": 3,
+  "width": 299,
+  "height": 299,
+  "n_classes": 3,
+  "n_channels": 1,
+  "n_blocks": 4,
+  "slice": 1.0,
+
+  "rgb" : false,
+  "normalize": true,
+
+  "early_stop": false,
+  "early_stop_epochs": 0
+}
