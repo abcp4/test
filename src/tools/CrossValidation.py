@@ -400,17 +400,16 @@ class CrossValidation( Session ) :
 				mean_valid_acc = 0
 				valid_count = 0
 				validationbar = tqdm( range( 0, len( dev_folds ), batch_size ) )
-				data=[[],[],[],[]]
+				
 				for iteration in validationbar :
 					validationbar.set_description( "\r- Validation Batch" )
 
 					x_batch, y_batch,z_batch = self.sess.run( next_val )
-					data[0].extend(y_batch.tolist())
-					data[1].extend(z_batch.tolist())
+					
 
 					feed_dict_batch = { self.x : x_batch, self.y : y_batch }
-					loss_valid, acc_valid,logits = self.sess.run( [self.loss, self.accuracy,self.output_logits], feed_dict = feed_dict_batch )
-					data[2].extend(logits.tolist())
+					loss_valid, acc_valid = self.sess.run( [self.loss, self.accuracy], feed_dict = feed_dict_batch )
+					
 
 					n = len( y_batch )
 					valid_count += n
@@ -419,20 +418,17 @@ class CrossValidation( Session ) :
 				validationbar.close( )
 
 				mean_valid_acc /= valid_count
-				data[3].append(mean_valid_acc)
-				print('DATA:',data)
+				
 				if mean_valid_acc > best_dev_acc :
 					best_dev_acc = mean_valid_acc
 					self.saver.save( self.sess, checkpoint_file )
 					death_counter = 0
-					import pickle
-					pickle.dump(data,open('best_data.p','wb'))
+					
 				else :
 					death_counter += 1
 
 				if death_counter >= early_stop_epochs :
 					break
-				a=2/0
 			
 
 			elif epoch == max_epochs :
@@ -467,12 +463,16 @@ class CrossValidation( Session ) :
 		dev_pred = []
 		dev_target = []
 		logits = []
+		data=[[],[],[],[]]
 
 		testbar = tqdm( range( 0, len( test_folds ), batch_size ) )
 		for iteration in testbar :
 			testbar.set_description( "\r- Test" )
 
 			x_batch, y_batch = self.sess.run( next_test )
+			data[0].extend(y_batch.tolist())
+			data[1].extend(z_batch.tolist())
+			
 
 			feed_dict_batch = { self.x : x_batch, self.y : y_batch }
 			valid_pred, logit = self.sess.run( [self.pred, self.output_logits] , feed_dict = feed_dict_batch )
@@ -480,6 +480,7 @@ class CrossValidation( Session ) :
 			dev_pred.extend( valid_pred )
 			dev_target.extend( y_batch )
 			logits.extend( logit )
+			data[2].extend(logit.tolist())
 
 		testbar.close( )
 
@@ -492,5 +493,7 @@ class CrossValidation( Session ) :
 		# Compute Metrics
 		metrics = m.generate( )
 		m.report( )
+		import pickle
+		pickle.dump(data,open('best_data.p','wb'))
 
 		return metrics
