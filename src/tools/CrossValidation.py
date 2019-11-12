@@ -493,7 +493,11 @@ class CrossValidation( Session ) :
 		# Compute Metrics
 		metrics = m.generate( )
 		m.report( )
-		import pickle
-		pickle.dump(data,open('best_data.p','wb'))
+		log_score = open("log_score.txt","a")
+		log_score.write('logits: '+str(data[2]) + "\n")
+		log_score.write('names: '+str(data[1]) + "\n")
+		log_score.write('accuracy:'+str(mean_train_acc)+'\n')
+		log_score.close()
+		print("SAVED!!")
 
 		return metrics
