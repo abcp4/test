@@ -385,13 +385,11 @@ class CrossValidation( Session ) :
 				trainbar.set_description( "\r- Train Batch" )
 
 				x_batch, y_batch,z_batch = self.sess.run( next_train )
-				#print('z batch:',z_batch)
-				#
+				
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
-				logits = self.sess.run( [self.optimizer,self.output_logits], feed_dict = feed_dict_batch )
-				print('logits:',logits)
-				a=2/0
+				self.sess.run( self.optimizer, feed_dict = feed_dict_batch )
+				
 
 			trainbar.close( )
 
@@ -402,29 +400,40 @@ class CrossValidation( Session ) :
 				mean_valid_acc = 0
 				valid_count = 0
 				validationbar = tqdm( range( 0, len( dev_folds ), batch_size ) )
+				data=[[],[],[],[]]
 				for iteration in validationbar :
 					validationbar.set_description( "\r- Validation Batch" )
 
 					x_batch, y_batch,z_batch = self.sess.run( next_val )
+					data[0].extend(y_batch.tolist())
+					data[1].extend(z_batch.tolist())
 
 					feed_dict_batch = { self.x : x_batch, self.y : y_batch }
-					loss_valid, acc_valid = self.sess.run( [self.loss, self.accuracy], feed_dict = feed_dict_batch )
+					loss_valid, acc_valid,logits = self.sess.run( [self.loss, self.accuracy,self.output_logits], feed_dict = feed_dict_batch )
+					data[2].extend(logits.tolist())
 
 					n = len( y_batch )
 					valid_count += n
 					mean_valid_acc += acc_valid * n
+				
 				validationbar.close( )
 
 				mean_valid_acc /= valid_count
+				data[3].append(mean_valid_acc)
+				print('DATA:',data)
 				if mean_valid_acc > best_dev_acc :
 					best_dev_acc = mean_valid_acc
 					self.saver.save( self.sess, checkpoint_file )
 					death_counter = 0
+					import pickle
+					pickle.dump(data,open('best_data.p','wb')
 				else :
 					death_counter += 1
 
 				if death_counter >= early_stop_epochs :
 					break
+			        a=2/0
+			
 
 			elif epoch == max_epochs :
 				print('\n Save last model \n')
