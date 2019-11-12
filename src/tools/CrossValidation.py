@@ -469,7 +469,7 @@ class CrossValidation( Session ) :
 		for iteration in testbar :
 			testbar.set_description( "\r- Test" )
 
-			x_batch, y_batch = self.sess.run( next_test )
+			x_batch, y_batch,z_batch = self.sess.run( next_test )
 			data[0].extend(y_batch.tolist())
 			data[1].extend(z_batch.tolist())
 			
