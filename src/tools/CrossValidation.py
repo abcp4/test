@@ -285,10 +285,7 @@ class CrossValidation( Session ) :
 	def run(self, X, Y, n_folds, epochs=40, batch_size=64, learning_rate=0.0001, early_stop_epochs=0, early_stop=False,
 			baseline=False, dev_pred=None) :
 		assert n_folds > 1, 'Tamanho de folds deve ser maior que 1'
-		print("X:")
-		Z = [file.split('/')[-1] for file in X]
-		print(Z)
-
+		
 		folds, X, Y = self.create_folds_2( n_folds, X, Y )
 		td_results = []
 		for fold_index, (train_folds, test_folds) in enumerate( folds ) :
@@ -302,7 +299,7 @@ class CrossValidation( Session ) :
 															   stratify = Y[train_folds] )
 				else :
 					dev_folds = []
-				result = self.train_schedule( X, Y,Z,
+				result = self.train_schedule( X, Y,
 											  train_folds, dev_folds, test_folds, max_epochs = epochs,
 											  early_stop_epochs = early_stop_epochs,
 											  batch_size = batch_size, lr = learning_rate )
@@ -314,7 +311,7 @@ class CrossValidation( Session ) :
 		print('fold processing time: ', fold_time, ' s')
 		return fold_time
 
-	def process_path(self, filename, label) :
+	def process_path(self, filename, label,name) :
 		img = tf.read_file( filename, name='read_file' )
 		img = tf.image.decode_image( img, name='decode', channels=3, expand_animations=False )
 		#img.set_shape( [None, None, 3] )
@@ -322,10 +319,10 @@ class CrossValidation( Session ) :
 			img = tf.image.rgb_to_grayscale( img )
 		img = tf.cast( 2 * (img / 255 - 0.5), tf.float32 )
 		label = tf.cast( label, tf.int64 )
-		return img, label
+		return img, label,name
 
 	def make_dataset(self, filename, labels, batch_size, training=True) :
-		dataset = tf.data.Dataset.from_tensor_slices( (filename, labels) )
+		dataset = tf.data.Dataset.from_tensor_slices( (filename, labels,filename) )
 		if training:
 			dataset = dataset.shuffle( 10000, seed = self.seed )
 		dataset = dataset.map( self.process_path, num_parallel_calls=4 )
@@ -339,7 +336,7 @@ class CrossValidation( Session ) :
 		return dataset_iterator, next_element
 
 
-	def train_schedule(self, X, Y,Z, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
+	def train_schedule(self, X, Y, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
 					    checkpoint=None, optimizer=None) :
 		fold_start = time.time( )
 		checkpoint_file = self.checkpoint_path + self.model_name + '/model'
@@ -387,8 +384,8 @@ class CrossValidation( Session ) :
 			for iteration in trainbar :
 				trainbar.set_description( "\r- Train Batch" )
 
-				x_batch, y_batch = self.sess.run( next_train )
-				print('x batch:',x_batch)
+				x_batch, y_batch,z_batch = self.sess.run( next_train )
+				print('z batch:',z_batch)
 				a=2/0
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
