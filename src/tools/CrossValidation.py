@@ -426,7 +426,7 @@ class CrossValidation( Session ) :
 					self.saver.save( self.sess, checkpoint_file )
 					death_counter = 0
 					import pickle
-					pickle.dump(data,open('best_data.p','wb')
+					pickle.dump(data,open('best_data.p','wb'))
 				else :
 					death_counter += 1
 
