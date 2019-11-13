@@ -338,7 +338,7 @@ class CrossValidation( Session ) :
 
 
 	def train_schedule(self, X, Y, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
-					    checkpoint=None, optimizer=None,fold_index=0 :
+					    checkpoint=None, optimizer=None,fold_index=0) :
 		fold_start = time.time( )
 		checkpoint_file = self.checkpoint_path + self.model_name + '/model'
 
