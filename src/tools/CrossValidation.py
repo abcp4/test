@@ -192,7 +192,8 @@ class CrossValidation( Session ) :
 				                                  test_folds = test_folds,
 				                                  max_epochs = self.params.num_epochs, early_stop_epochs = 0,
 				                                  batch_size = self.params.batch,
-				                                  lr = self.params.learning_rate, checkpoint = self.params.checkpoint )
+				                                  lr = self.params.learning_rate, checkpoint = self.params.checkpoint,
+								  fold_index = fold_index)
 				self.sess.close()
 				self.sess = self.create_session()
 
@@ -337,7 +338,7 @@ class CrossValidation( Session ) :
 
 
 	def train_schedule(self, X, Y, train_folds, dev_folds, test_folds, max_epochs, early_stop_epochs, batch_size, lr,
-					    checkpoint=None, optimizer=None) :
+					    checkpoint=None, optimizer=None,fold_index=0 :
 		fold_start = time.time( )
 		checkpoint_file = self.checkpoint_path + self.model_name + '/model'
 
@@ -475,7 +476,7 @@ class CrossValidation( Session ) :
 			
 
 			feed_dict_batch = { self.x : x_batch, self.y : y_batch }
-			valid_pred, logit = self.sess.run( [self.pred, self.output_logits] , feed_dict = feed_dict_batch )
+			valid_pred, logit = self.sess.run( [self.pred, self.tscore] , feed_dict = feed_dict_batch )
 
 			dev_pred.extend( valid_pred )
 			dev_target.extend( y_batch )
@@ -494,10 +495,12 @@ class CrossValidation( Session ) :
 		metrics = m.generate( )
 		m.report( )
 		log_score = open("log_score.txt","a")
+		log_score.write('fold_index: '+str(fold_index) + "\n")	   
 		log_score.write('logits: '+str(data[2]) + "\n")
 		log_score.write('names: '+str(data[1]) + "\n")
 		log_score.write('accuracy:'+str(mean_train_acc)+'\n')
 		log_score.close()
+		pickle.dump([data[2],data[1],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
 		print("SAVED!!")
 
 		return metrics
