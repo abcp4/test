@@ -389,7 +389,8 @@ class CrossValidation( Session ) :
 				
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
-				self.sess.run( self.optimizer, feed_dict = feed_dict_batch )
+				a=self.sess.run( [self.optimizer,self.tscore], feed_dict = feed_dict_batch )
+				print(a)
 				
 
 			trainbar.close( )
