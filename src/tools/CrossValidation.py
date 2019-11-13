@@ -389,8 +389,8 @@ class CrossValidation( Session ) :
 				
 
 				feed_dict_batch = { self.x : x_batch, self.y : y_batch, self.lr_placeholder : lr }
-				a=self.sess.run( [self.optimizer,self.tscores], feed_dict = feed_dict_batch )
-				print(a)
+				self.sess.run( self.optimizer, feed_dict = feed_dict_batch )
+				
 				
 
 			trainbar.close( )
@@ -501,7 +501,7 @@ class CrossValidation( Session ) :
 		log_score.write('names: '+str(data[1]) + "\n")
 		log_score.write('accuracy:'+str(mean_train_acc)+'\n')
 		log_score.close()
-		pickle.dump([data[2],data[1],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
+		pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
 		print("SAVED!!")
 
 		return metrics
