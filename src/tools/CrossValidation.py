@@ -59,8 +59,7 @@ class CrossValidation( Session ) :
 			                            beta = self.params.beta, width = self.params.width, height = self.params.height,
 			                            rgb = self.params.rgb, normalize = self.params.normalize, add_pos = False )
 			filename_test, _class_test = data_test.load_file( label = 'Test' )
-			print(filename_test)
-			a=2/0
+			
 
 			filename_test, _class_test = data_test.split( filename_test, _class_test, slice = 1 )
 			self.X_test, self.Y_test = data_test.process( filename_test, _class_test )
