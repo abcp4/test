@@ -87,8 +87,11 @@ class CrossValidation( Session ) :
 		Evaluate( self.model_name, self.model_description, self.params.n_classes ).save_metrics( [td_results], self.params )
 
 	def workflow_default(self) :
+		print(self.X_train)
+		print(self.X_train.shape)
+		
 
-		td_results = self.run( X = np.concatenate(self.X_train,self.X_test), Y = np.concatenate(self.Y_train,self.Y_test), n_folds = self.params.n_folds, epochs = self.params.num_epochs,
+		td_results = self.run( X = np.concatenate(,self.X_test), Y = np.concatenate(self.Y_train,self.Y_test), n_folds = self.params.n_folds, epochs = self.params.num_epochs,
 							   batch_size = self.params.batch, learning_rate = self.params.learning_rate,
 							   early_stop_epochs = self.params.early_stop_epochs,
 							   early_stop = self.params.early_stop )
