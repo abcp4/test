@@ -256,13 +256,10 @@ class CrossValidation( Session ) :
 		import os
 		
 		folds = os.listdir(path_to_folds)
-		fs=[]
-		for f in folds:
-		    fs.append(int(f))
-		sort(fs)
+		
 		folds=[]
-		for f in fs:
-		    folds.append(str(f))
+		for i in range(10):
+		    folds.append(str(i))
 		print(folds)
 		for fold_index in folds:
 			import pandas as pd
