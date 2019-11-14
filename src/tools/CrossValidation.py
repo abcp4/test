@@ -516,8 +516,8 @@ class CrossValidation( Session ) :
 		m = Metrics( train_acc = mean_train_acc, dev_target = dev_target, dev_pred = dev_pred,
 		             filenames = X[test_folds], logits = logits, elapsed_time = elapsed_time, n_classes = self.params.n_classes )
 		# Compute Metrics
-		#metrics = m.generate( )
-		#m.report( )
+		metrics = m.generate( )
+		m.report( )
 		log_score = open("log_score.txt","a")
 		log_score.write('fold_index: '+str(fold_index) + "\n")	   
 		log_score.write('logits: '+str(data[2]) + "\n")
