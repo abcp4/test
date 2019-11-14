@@ -88,7 +88,12 @@ class CrossValidation( Session ) :
 
 	def workflow_default(self) :
 		print(self.X_train)
+		print(self.X_test)
 		print(self.X_train.shape)
+		print(self.X_test.shape)
+		print(self.Y_train.shape)
+		print(self.Y_test.shape)
+		
 		
 
 		td_results = self.run( X = np.concatenate(self.X_train,self.X_test), Y = np.concatenate(self.Y_train,self.Y_test), n_folds = self.params.n_folds, epochs = self.params.num_epochs,
