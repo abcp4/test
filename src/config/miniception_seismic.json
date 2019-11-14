@@ -3,7 +3,7 @@
   "data_folder": "Train_Seismic",
 
   "label_test_filename": "test_png.txt",
-  "data_test_folder": "FIGURAS_ML_PUC_2019_Ia",
+  "data_test_folder": "FIGURAS_ML_PUC_2019_Co",
 
   "checkpoint": "miniception_D_1571285719.1279602",
 
