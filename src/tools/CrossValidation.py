@@ -266,12 +266,12 @@ class CrossValidation( Session ) :
 		import os
 		
 		folds = os.listdir(path_to_folds)
-		print(folds)
+	
 		
 		folds=[]
 		for i in range(10):
 		    folds.append(str(i))
-		print(folds)
+		
 		for fold_index in folds:
 			import pandas as pd
 			print(f'{path_to_folds}/{fold_index}')
@@ -283,13 +283,10 @@ class CrossValidation( Session ) :
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
 			
-			print(cond_train)
-			print(cond_test)
-			
 			index_train, index_test = np.where(cond_train == True)[0], np.where(cond_test == True)[0]
 			print(index_train)
 			print(index_test)
-			a=2/0
+			
 			print('>>>>>>>>', index_train.shape, index_test.shape, self.params.augmented)
 			if self.params.aug_images:
 				arqs = os.listdir(f'{path_to_folds}/{fold_index}')
