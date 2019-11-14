@@ -269,10 +269,10 @@ class CrossValidation( Session ) :
 			test = pd.read_csv(f'{path_to_folds}/{fold_index}/test.txt', names=['filename', 'class'])
 			
 
+			print([file.split('/')[-1] for file in X])
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
-			for j in range(len(cond_test)):
-			    cond_test= True
+			
 			print(cond_train)
 			print(cond_test)
 			
