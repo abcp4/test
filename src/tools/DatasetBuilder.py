@@ -51,6 +51,8 @@ class DatasetBuilder( ) :
 			return pd.Series([]), pd.Series([])
 
 	def split(self, x, y, slice=1.0) :
+		print(slice)
+		a=2/0
 		# Se slice for igual a 1(dataset inteiro) é retornado direto
 		if slice == 1 :
 			return x, y
