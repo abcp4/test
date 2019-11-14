@@ -271,6 +271,8 @@ class CrossValidation( Session ) :
 
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
+			print(cond_train)
+			print(cond_test)
 			
 			index_train, index_test = np.where(cond_train == True)[0], np.where(cond_test == True)[0]
 			print(index_train)
