@@ -502,6 +502,7 @@ class CrossValidation( Session ) :
 		log_score.write('names: '+str(data[1]) + "\n")
 		log_score.write('accuracy:'+str(mean_train_acc)+'\n')
 		log_score.close()
+		import pickle
 		pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
 		print("SAVED!!")
 
