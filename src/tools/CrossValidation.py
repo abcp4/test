@@ -256,6 +256,7 @@ class CrossValidation( Session ) :
 		import os
 		
 		folds = os.listdir(path_to_folds)
+		print(folds)
 		for fold_index in folds:
 			import pandas as pd
 			print(f'{path_to_folds}/{fold_index}')
@@ -263,6 +264,7 @@ class CrossValidation( Session ) :
 			test = pd.read_csv(f'{path_to_folds}/{fold_index}/test.txt', names=['filename', 'class'])
 			
 			print(test)
+			
 			a=2/0
 
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
