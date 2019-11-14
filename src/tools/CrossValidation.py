@@ -258,10 +258,10 @@ class CrossValidation( Session ) :
 		folds = os.listdir(path_to_folds)
 		print(folds)
 		
-		folds=[]
-		for i in range(10):
-		    folds.append(str(i))
-		print(folds)
+		#folds=[]
+		#for i in range(10):
+		#    folds.append(str(i))
+		#print(folds)
 		for fold_index in folds:
 			import pandas as pd
 			print(f'{path_to_folds}/{fold_index}')
