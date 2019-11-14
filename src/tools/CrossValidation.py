@@ -93,11 +93,11 @@ class CrossValidation( Session ) :
 		print(self.X_test.shape)
 		print(self.Y_train.shape)
 		print(self.Y_test.shape)
-		X = np.concatenate(np.array(self.X_train),np.array(self.X_test))
-		Y = np.concatenate(np.array(self.Y_train),np.array(self.Y_test))
+		self.X = np.concatenate( [self.X_train, self.X_test] )
+		self.Y = np.concatenate( [self.Y_train, self.Y_test] )
 
 
-		td_results = self.run( X = X, Y = Y, n_folds = self.params.n_folds, epochs = self.params.num_epochs,
+		td_results = self.run( X = self.X, Y = self.Y, n_folds = self.params.n_folds, epochs = self.params.num_epochs,
 							   batch_size = self.params.batch, learning_rate = self.params.learning_rate,
 							   early_stop_epochs = self.params.early_stop_epochs,
 							   early_stop = self.params.early_stop )
