@@ -55,8 +55,7 @@ class CrossValidation( Session ) :
 			self.X_train, self.Y_train = data_train.process( filename, _class, augmented = self.params.augmented )
 
 			# Carrega os arquivos de teste
-			print(self.params.label_test_filename)
-			a=2/0
+			
 			data_test = DatasetBuilder( self.params.label_test_filename, self.params.data_test_folder,
 			                            beta = self.params.beta, width = self.params.width, height = self.params.height,
 			                            rgb = self.params.rgb, normalize = self.params.normalize, add_pos = False )
@@ -262,6 +261,9 @@ class CrossValidation( Session ) :
 			print(f'{path_to_folds}/{fold_index}')
 			train = pd.read_csv(f'{path_to_folds}/{fold_index}/train.txt', names=['filename', 'class'])
 			test = pd.read_csv(f'{path_to_folds}/{fold_index}/test.txt', names=['filename', 'class'])
+			
+			print(test)
+			a=2/0
 
 			cond_train = np.isin([file.split('/')[-1] for file in X], train.filename.values)
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
