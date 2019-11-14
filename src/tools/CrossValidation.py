@@ -100,6 +100,8 @@ class CrossValidation( Session ) :
 							   beta = self.params.beta, width = self.params.width, height = self.params.height,
 							   normalize = self.params.normalize, add_pos = False )
 		filename, labels = data.load_file( )
+		print(labels)
+		a=2/0
 		filename, _class = data.split( filename, labels, slice = self.params.slice )
 
 		images = data.load_images( filename, width = self.params.width, height = self.params.height,
