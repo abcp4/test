@@ -256,6 +256,7 @@ class CrossValidation( Session ) :
 		import os
 		
 		folds = os.listdir(path_to_folds)
+		print(folds)
 		
 		folds=[]
 		for i in range(10):
