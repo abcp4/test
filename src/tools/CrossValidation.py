@@ -256,14 +256,19 @@ class CrossValidation( Session ) :
 		import os
 		
 		folds = os.listdir(path_to_folds)
+		fs=[]
+		for f in folds:
+		    fs.append(int(f))
+		sort(fs)
+		folds=[]
+		for f in fs:
+		    folds.append(str(f))
 		print(folds)
 		for fold_index in folds:
 			import pandas as pd
 			print(f'{path_to_folds}/{fold_index}')
 			train = pd.read_csv(f'{path_to_folds}/{fold_index}/train.txt', names=['filename', 'class'])
 			test = pd.read_csv(f'{path_to_folds}/{fold_index}/test.txt', names=['filename', 'class'])
-			
-			print(test)
 			
 			a=2/0
 
