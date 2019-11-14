@@ -275,6 +275,7 @@ class CrossValidation( Session ) :
 			index_train, index_test = np.where(cond_train == True)[0], np.where(cond_test == True)[0]
 			print(index_train)
 			print(index_test)
+			a=2/0
 			print('>>>>>>>>', index_train.shape, index_test.shape, self.params.augmented)
 			if self.params.aug_images:
 				arqs = os.listdir(f'{path_to_folds}/{fold_index}')
