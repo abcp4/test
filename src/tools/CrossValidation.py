@@ -55,6 +55,8 @@ class CrossValidation( Session ) :
 			self.X_train, self.Y_train = data_train.process( filename, _class, augmented = self.params.augmented )
 
 			# Carrega os arquivos de teste
+			print(self.params.label_test_filename)
+			a=2/0
 			data_test = DatasetBuilder( self.params.label_test_filename, self.params.data_test_folder,
 			                            beta = self.params.beta, width = self.params.width, height = self.params.height,
 			                            rgb = self.params.rgb, normalize = self.params.normalize, add_pos = False )
