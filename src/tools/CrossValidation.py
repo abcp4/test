@@ -271,6 +271,7 @@ class CrossValidation( Session ) :
 		folds=[]
 		for i in range(10):
 		    folds.append(str(i))
+		folds = ['0','4','5','6','7','8','9','1','2','3']
 		
 		for fold_index in folds:
 			import pandas as pd
@@ -326,7 +327,7 @@ class CrossValidation( Session ) :
 				result = self.train_schedule( X, Y,
 											  train_folds, dev_folds, test_folds, max_epochs = epochs,
 											  early_stop_epochs = early_stop_epochs,
-											  batch_size = batch_size, lr = learning_rate )
+											  batch_size = batch_size, lr = learning_rate,fold_index=fold_index )
 			td_results.append( result )
 		return td_results
 
