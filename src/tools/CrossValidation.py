@@ -488,12 +488,9 @@ class CrossValidation( Session ) :
 
 					testbar.close( )
 
-					# Compute time of processing
-					fold_end = time.time( )
-					elapsed_time = self.elapsed_time( fold_start, fold_end )
 					# Instatiate Metrics
-					m = Metrics( train_acc = mean_train_acc, dev_target = dev_target, dev_pred = dev_pred,
-						     filenames = X[test_folds], logits = logits, elapsed_time = elapsed_time, n_classes = self.params.n_classes )
+					m = Metrics( train_acc = mean_valid_acc, dev_target = dev_target, dev_pred = dev_pred,
+						     filenames = X[test_folds], logits = logits, elapsed_time = 0, n_classes = self.params.n_classes )
 					# Compute Metrics
 					metrics = m.generate( )
 					m.report( )
@@ -501,10 +498,10 @@ class CrossValidation( Session ) :
 					log_score.write('fold_index: '+str(fold_index) + "\n")	   
 					log_score.write('logits: '+str(data[2]) + "\n")
 					log_score.write('names: '+str(data[1]) + "\n")
-					log_score.write('accuracy:'+str(mean_train_acc)+'\n')
+					log_score.write('accuracy:'+str(mean_valid_acc)+'\n')
 					log_score.close()
 					import pickle
-					pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
+					pickle.dump([data[1],data[2],mean_valid_acc],open('data'+str(fold_index)+'.p','wb'))
 					#print("SAVED!!")
 					pbar.close( )
 							
