@@ -5,7 +5,6 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import StratifiedKFold, train_test_split, KFold
 #from tqdm import tqdm
-from tqdm.auto import tqdm
 
 from src.tools.Baseline import Baseline
 from src.tools.DatasetBuilder import DatasetBuilder
@@ -13,6 +12,12 @@ from src.tools.Session import Session
 from src.tools.evaluate import Evaluate, Metrics
 from src.tools.segy_reader import SegyReader
 
+from tqdm import tqdm as tqdm_base
+def tqdm(*args, **kwargs):
+    if hasattr(tqdm_base, '_instances'):
+        for instance in list(tqdm_base._instances):
+            tqdm_base._decr_instances(instance)
+    return tqdm_base(*args, **kwargs)
 
 class CrossValidation( Session ) :
 	def __init__(self, config, params, checkpoint_path='checkpoints/'):
