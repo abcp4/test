@@ -38,7 +38,7 @@ class CrossValidation( Session ) :
 				labels_path = "../classification/test_png.txt",
 				batch_size = 1
 			)
-			print( 'Test SEGY ', test_reader )
+			#print( 'Test SEGY ', test_reader )
 
 			self.X_train, self.Y_train = [], []
 			self.X_test, self.Y_test = test_reader
@@ -87,12 +87,14 @@ class CrossValidation( Session ) :
 		Evaluate( self.model_name, self.model_description, self.params.n_classes ).save_metrics( [td_results], self.params )
 
 	def workflow_default(self) :
+		"""
 		print(self.X_train)
 		print(self.X_test)
 		print(self.X_train.shape)
 		print(self.X_test.shape)
 		print(self.Y_train.shape)
 		print(self.Y_test.shape)
+		"""
 		self.X = np.concatenate( [self.X_train, self.X_test] )
 		self.Y = np.concatenate( [self.Y_train, self.Y_test] )
 
@@ -133,7 +135,7 @@ class CrossValidation( Session ) :
 		                                  lr = self.params.learning_rate, checkpoint = self.params.checkpoint,
 		                                  optimizer = threshold )
 
-		print('Best F1 in test: ', td_results[5])
+		#print('Best F1 in test: ', td_results[5])
 		# Evaluate( self.model_name, self.model_description, self.params.n_classes ).save_metrics( td_results, self.params )
 
 	def fit_predict_threshold_2(self):
@@ -155,7 +157,7 @@ class CrossValidation( Session ) :
 												 batch_size=self.params.batch,
 												 lr=self.params.learning_rate, checkpoint=checkpoint, optimizer=optimizer)
 				f1 = td_results[5]
-				print(f1, optimizer)
+				#print(f1, optimizer)
 				if f1 >= best_f1:
 					best_f1 = f1
 					best_optimizer = optimizer
@@ -167,7 +169,7 @@ class CrossValidation( Session ) :
 		                                  lr = self.params.learning_rate, checkpoint = self.params.checkpoint,
 		                                  optimizer = best_optimizer )
 
-		print('Best F1 in test: ', td_results[5])
+		#print('Best F1 in test: ', td_results[5])
 		# Evaluate( self.model_name, self.model_description, self.params.n_classes ).save_metrics( td_results, self.params )
 
 	def predict(self):
@@ -190,14 +192,14 @@ class CrossValidation( Session ) :
 		results = []
 		kf = StratifiedKFold( n_splits = self.params.n_folds, shuffle = True, random_state = self.seed )
 		for fold_index, (test_folds, train_folds) in enumerate( kf.split( indices, self.Y_test ) ) :
-			print( 'FOLD ', fold_index + 1 )
+			#print( 'FOLD ', fold_index + 1 )
 			fold_results = []
 			for subsample in range( 1, max_sample + 1 ) :
 				if subsample == max_sample :
 					train, dev = train_folds, []
 				else :
 					train, dev = train_test_split( train_folds, train_size = subsample, shuffle = False, random_state = self.seed )
-				print(len(train))
+				#print(len(train))
 
 				td_results = self.train_schedule( X = self.X_test, Y = self.Y_test, train_folds = train,
 				                                  dev_folds = [],
@@ -275,7 +277,7 @@ class CrossValidation( Session ) :
 		
 		for fold_index in folds:
 			import pandas as pd
-			print(f'{path_to_folds}/{fold_index}')
+			#print(f'{path_to_folds}/{fold_index}')
 			train = pd.read_csv(f'{path_to_folds}/{fold_index}/train.txt', names=['filename', 'class'])
 			test = pd.read_csv(f'{path_to_folds}/{fold_index}/test.txt', names=['filename', 'class'])
 			
@@ -285,10 +287,10 @@ class CrossValidation( Session ) :
 			cond_test = np.isin([file.split('/')[-1] for file in X], test.filename.values)
 			
 			index_train, index_test = np.where(cond_train == True)[0], np.where(cond_test == True)[0]
-			print(index_train)
-			print(index_test)
+			#print(index_train)
+			#print(index_test)
 			
-			print('>>>>>>>>', index_train.shape, index_test.shape, self.params.augmented)
+			#print('>>>>>>>>', index_train.shape, index_test.shape, self.params.augmented)
 			if self.params.aug_images:
 				arqs = os.listdir(f'{path_to_folds}/{fold_index}')
 				augment = [x for x in arqs if x.endswith('.png')]
@@ -299,7 +301,7 @@ class CrossValidation( Session ) :
 				index_train = np.concatenate((index_train, index_augment))
 
 				Y = np.concatenate([Y, [2] * len(augment)])
-			print('>>>>>>>>', index_train.shape, index_test.shape)
+			#print('>>>>>>>>', index_train.shape, index_test.shape)
 			split.append([ index_train , index_test])
 		return split, X, Y
 
@@ -314,8 +316,8 @@ class CrossValidation( Session ) :
 		folds, X, Y = self.create_folds_2( n_folds, X, Y )
 		td_results = []
 		for fold_index, (train_folds, test_folds) in enumerate( folds ) :
-			print('Model : ', self.model_name)
-			print('Processing Fold : ', fold_index + 1)
+			#print('Model : ', self.model_name)
+			#print('Processing Fold : ', fold_index + 1)
 			if baseline :
 				result = self.baseline.predict( train_folds, test_folds, dev_pred, Y )
 			else :
@@ -333,7 +335,7 @@ class CrossValidation( Session ) :
 
 	def elapsed_time(self, start, end) :
 		fold_time = end - start
-		print('fold processing time: ', fold_time, ' s')
+		#print('fold processing time: ', fold_time, ' s')
 		return fold_time
 
 	def process_path(self, filename, label,name) :
@@ -391,9 +393,9 @@ class CrossValidation( Session ) :
 				value += optimizer
 				threshold = tf.assign(threshold, value)
 				k = self.sess.run( threshold )
-				print(k)
+				#print(k)
 
-		if len( dev_folds ) == 0 : print('no early stopping, save last model at epoch ', max_epochs)
+		#if len( dev_folds ) == 0 : print('no early stopping, save last model at epoch ', max_epochs)
 		# Number of training iterations in each epoch
 		best_dev_acc = 0
 		death_counter = 0
@@ -458,7 +460,7 @@ class CrossValidation( Session ) :
 			
 
 			elif epoch == max_epochs :
-				print('\n Save last model \n')
+				#print('\n Save last model \n')
 				self.saver.save( self.sess, checkpoint_file )
 		pbar.close( )
 
@@ -527,6 +529,6 @@ class CrossValidation( Session ) :
 		log_score.close()
 		import pickle
 		pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
-		print("SAVED!!")
+		#print("SAVED!!")
 
 		return metrics
