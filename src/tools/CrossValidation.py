@@ -4,7 +4,8 @@ from imp import reload
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import StratifiedKFold, train_test_split, KFold
-from tqdm import tqdm
+#from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from src.tools.Baseline import Baseline
 from src.tools.DatasetBuilder import DatasetBuilder
