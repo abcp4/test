@@ -458,6 +458,56 @@ class CrossValidation( Session ) :
 					self.saver.save( self.sess, checkpoint_file )
 					death_counter = 0
 					
+					#minha alt
+					
+					#################################Teste######################33
+					# self.saver.restore( self.sess, checkpoint_file )
+					self.sess.run( test_init_op.initializer,
+								   feed_dict = { features_placeholder : X[test_folds], labels_placeholder : Y[test_folds] } )
+					dev_pred = []
+					dev_target = []
+					logits = []
+					data=[[],[],[],[]]
+
+					testbar = tqdm( range( 0, len( test_folds ), batch_size ) )
+					for iteration in testbar :
+						testbar.set_description( "\r- Test" )
+
+						x_batch, y_batch,z_batch = self.sess.run( next_test )
+						data[0].extend(y_batch.tolist())
+						data[1].extend(z_batch.tolist())
+
+
+						feed_dict_batch = { self.x : x_batch, self.y : y_batch }
+						valid_pred, logit = self.sess.run( [self.pred, self.output_logits] , feed_dict = feed_dict_batch )
+
+						dev_pred.extend( valid_pred )
+						dev_target.extend( y_batch )
+						logits.extend( logit )
+						data[2].extend(logit.tolist())
+
+					testbar.close( )
+
+					# Compute time of processing
+					fold_end = time.time( )
+					elapsed_time = self.elapsed_time( fold_start, fold_end )
+					# Instatiate Metrics
+					m = Metrics( train_acc = mean_train_acc, dev_target = dev_target, dev_pred = dev_pred,
+						     filenames = X[test_folds], logits = logits, elapsed_time = elapsed_time, n_classes = self.params.n_classes )
+					# Compute Metrics
+					metrics = m.generate( )
+					m.report( )
+					log_score = open("log_score.txt","a")
+					log_score.write('fold_index: '+str(fold_index) + "\n")	   
+					log_score.write('logits: '+str(data[2]) + "\n")
+					log_score.write('names: '+str(data[1]) + "\n")
+					log_score.write('accuracy:'+str(mean_train_acc)+'\n')
+					log_score.close()
+					import pickle
+					pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
+					#print("SAVED!!")
+					pbar.close( )
+							
 				else :
 					death_counter += 1
 
@@ -468,7 +518,9 @@ class CrossValidation( Session ) :
 			elif epoch == max_epochs :
 				#print('\n Save last model \n')
 				self.saver.save( self.sess, checkpoint_file )
-		pbar.close( )
+			
+			
+			
 
 		# Treinamento - Acuracia
 		# self.saver.restore( self.sess, checkpoint_file )
@@ -491,6 +543,7 @@ class CrossValidation( Session ) :
 		mean_train_acc = mean_train_acc / (train_count + 1e-10)
 
 		# Teste
+		
 		# self.saver.restore( self.sess, checkpoint_file )
 		self.sess.run( test_init_op.initializer,
 					   feed_dict = { features_placeholder : X[test_folds], labels_placeholder : Y[test_folds] } )
@@ -498,7 +551,7 @@ class CrossValidation( Session ) :
 		dev_target = []
 		logits = []
 		data=[[],[],[],[]]
-
+		
 		testbar = tqdm( range( 0, len( test_folds ), batch_size ) )
 		for iteration in testbar :
 			testbar.set_description( "\r- Test" )
@@ -509,7 +562,7 @@ class CrossValidation( Session ) :
 			
 
 			feed_dict_batch = { self.x : x_batch, self.y : y_batch }
-			valid_pred, logit = self.sess.run( [self.pred, self.tscores] , feed_dict = feed_dict_batch )
+			valid_pred, logit = self.sess.run( [self.pred, self.output_logits] , feed_dict = feed_dict_batch )
 
 			dev_pred.extend( valid_pred )
 			dev_target.extend( y_batch )
@@ -517,7 +570,7 @@ class CrossValidation( Session ) :
 			data[2].extend(logit.tolist())
 
 		testbar.close( )
-
+	
 		# Compute time of processing
 		fold_end = time.time( )
 		elapsed_time = self.elapsed_time( fold_start, fold_end )
@@ -527,6 +580,7 @@ class CrossValidation( Session ) :
 		# Compute Metrics
 		metrics = m.generate( )
 		m.report( )
+		"""
 		log_score = open("log_score.txt","a")
 		log_score.write('fold_index: '+str(fold_index) + "\n")	   
 		log_score.write('logits: '+str(data[2]) + "\n")
@@ -536,5 +590,6 @@ class CrossValidation( Session ) :
 		import pickle
 		pickle.dump([data[1],data[2],mean_train_acc],open('data'+str(fold_index)+'.p','wb'))
 		#print("SAVED!!")
+		"""
 
 		return metrics
