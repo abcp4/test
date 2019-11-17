@@ -279,7 +279,10 @@ class CrossValidation( Session ) :
 		folds=[]
 		for i in range(10):
 		    folds.append(str(i))
-		folds = ['0','4','5','6','7','8','9','1','2','3']
+		#folds = ['0','4','5','6','7','8','9','1','2','3']
+		folds = ['9','1','2','3','0','4','5','6','7','8',]
+		
+		
 		
 		for fold_index in folds:
 			import pandas as pd
